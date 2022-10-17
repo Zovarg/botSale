@@ -197,12 +197,7 @@
                       :options="optionsIf"
                       @select-opt="optionSelectMain"
                   />:
-                  <main-drop-down
-                      style="border-bottom: 1px dashed black"
-                      :selected="selectedOptSecond"
-                      :options="optionsIfSecond"
-                      @select-opt="optionSelectMainSecond"
-                  />
+                  <input type="text" style="border-bottom: 1px dashed black; outline: none"/>
                 </div>
               </div>
               <div class="circle-pause">
@@ -327,7 +322,14 @@
         <div class="pause-body__main">
 
           <div>
-            <div class="wrapper-select-pause">
+            <div class="wrapper-select-additionalField">
+              <main-drop-down
+                  style="border-bottom: 1px dashed black"
+                  :selected="selectedOptFirst"
+                  :options="optionsIfFirst"
+                  @select-opt="optionSelectMainFirst"
+              />
+              <input type="text" style="border-bottom: 1px dashed black; outline: none"/>
               <div class="circle-pause">
 
               </div>
@@ -404,8 +406,7 @@ export default {
         {name:'Изменить знач. доп поля', value: 'Изменить знач. доп поля'},
       ],
       selectedOpt:'Не выбрано',
-      selectedOptFirst:'Объект',
-      selectedOptSecond:'Что-то',
+      selectedOptFirst:'Поле',
       messageToWhom: [
         {name:'Клиент', value: 'Клиент'},
         {name:'Менеджер', value: 'Менеджер'},
@@ -417,11 +418,11 @@ export default {
         {name:'Содержит', value: 'Содержит'},
       ],
       optionsIfFirst: [
-        {name:'Доп поле', value: 'Равно'},
-      ],
-      optionsIfSecond: [
-        {name:'Чему-то', value: 'Чему-то'},
-        {name:'Кому-то', value: 'Кому-то'},
+        {name:'Фамилия', value: 'Фамилия'},
+        {name:'Имя', value: 'Имя'},
+        {name:'Отчество', value: 'Отчество'},
+        {name:'Пол', value: 'Пол'},
+        {name:'СНИЛС', value: 'СНИЛС'},
       ],
       optionsUsual: [
         {name:'Сменить действие', value: 'Сменить действие'},
@@ -592,9 +593,6 @@ export default {
     },
     optionSelectMainFirst(option){
       this.selectedOptFirst=option.name
-    },
-    optionSelectMainSecond(option){
-      this.selectedOptSecond=option.name
     },
     optionSelectAction(option){
       if (option.name=='Сменить этап'){
@@ -818,13 +816,26 @@ export default {
   position: relative;
   display: flex;
 }
+.wrapper-select-additionalField{
+  border: 1px solid #d5d5d5;
+  background: #f7f7f7;
+  padding-top: 7px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  width: 100%;
+  height: 34px;
+  margin-bottom: 19px;
+  position: relative;
+  display: flex;
+  gap: 10px;
+}
 .wrapper-select-if{
   border: 1px solid #d5d5d5;
   background: #f7f7f7;
   padding-top: 7px;
   padding-bottom: 5px;
   width: 100%;
-  height: 34px;
+  height: 100%;
   margin-bottom: 19px;
   position: relative;
   display: flex;
@@ -836,7 +847,8 @@ export default {
 }
 .if-description__text{
   display: flex;
-  gap:8px
+  gap:8px;
+  flex-wrap: wrap;
 }
 .pause-timer{
   width: 10px;
