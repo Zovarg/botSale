@@ -211,7 +211,6 @@
             </div>
 
           </div>
-          <button class="pause-new_button" @click="addButton()">+ Добавить следующее условие</button>
         </div>
       </div>
     </slot>
@@ -306,12 +305,12 @@
       </div>
       <div class="pause-body">
         <div class="pause-body__main">
-          <div>
-            <div class="wrapper-select-pause" v-for="option in $parent.bots">
-              {{option.id}}-{{option.type}}
-            </div>
-
-          </div>
+          <drop-down-progress
+              v-if="optionsProgress.length"
+              :options="optionsProgress"
+              :selected="selectedProgress"
+              @select-deal="optionSelectProgress"
+          />
         </div>
       </div>
     </slot>
@@ -335,7 +334,6 @@
             </div>
 
           </div>
-          <button class="pause-new_button" @click="addButton()">+ Добавить следующее условие</button>
         </div>
       </div>
     </slot>
@@ -384,12 +382,20 @@ import Vue from 'vue'
 import UsualFunctionsDropDown from "@/Components/usualFunctionsDropDown";
 import ActionDropDown from "@/Components/ActionDropDown";
 import MainDropDown from "@/Components/mainDropDown";
+import DropDownProgress from "@/Components/dropDownProgress";
 export default {
   name: 'typeBot',
-  components: {MainDropDown, ActionDropDown, UsualFunctionsDropDown},
+  components: {DropDownProgress, MainDropDown, ActionDropDown, UsualFunctionsDropDown},
   props: ['id'],
   data () {
     return {
+      optionsProgress:[
+        {id:1, name:'Фиксация клиента', color:'rgb(115, 0, 255)', text:'white',value:'Фиксация клиента'},
+        {id:2, name:'Прямое обращение', color:'rgb(0, 206, 206)', text:'white',value:'Фиксация клиента'},
+        {id:3, name:'Возврат от отдела продаж', color:'rgb(255, 128, 64)', text:'black',value:'Фиксация клиента'},
+        {id:4, name:'Принято в работу', color:'rgb(196, 255, 196)', text:'black',value:'Фиксация клиента'}
+      ],
+      selectedProgress:'Не выбрано',
       hoursModel:0,
       minutModel:1,
       secModel:0,
@@ -455,7 +461,9 @@ export default {
     }
   },
   methods: {
-
+    optionSelectProgress(option) {
+      this.selectedProgress = option.id;
+    },
     closeSelect(){
       this.areOptionsVisible=false;
     },
