@@ -187,10 +187,22 @@
                   <div>Если</div>
                   <main-drop-down
                       style="border-bottom: 1px dashed black"
+                      :selected="selectedOptFirst"
+                      :options="optionsIfFirst"
+                      @select-opt="optionSelectMainFirst"
+                  />
+                  <main-drop-down
+                      style="border-bottom: 1px dashed black"
                       :selected="selectedOpt"
                       :options="optionsIf"
                       @select-opt="optionSelectMain"
                   />:
+                  <main-drop-down
+                      style="border-bottom: 1px dashed black"
+                      :selected="selectedOptSecond"
+                      :options="optionsIfSecond"
+                      @select-opt="optionSelectMainSecond"
+                  />
                 </div>
               </div>
               <div class="circle-pause">
@@ -386,6 +398,8 @@ export default {
         {name:'Изменить знач. доп поля', value: 'Изменить знач. доп поля'},
       ],
       selectedOpt:'Не выбрано',
+      selectedOptFirst:'Объект',
+      selectedOptSecond:'Что-то',
       messageToWhom: [
         {name:'Клиент', value: 'Клиент'},
         {name:'Менеджер', value: 'Менеджер'},
@@ -395,6 +409,13 @@ export default {
         {name:'Равно', value: 'Равно'},
         {name:'Не равно', value: 'Не равно'},
         {name:'Содержит', value: 'Содержит'},
+      ],
+      optionsIfFirst: [
+        {name:'Доп поле', value: 'Равно'},
+      ],
+      optionsIfSecond: [
+        {name:'Чему-то', value: 'Чему-то'},
+        {name:'Кому-то', value: 'Кому-то'},
       ],
       optionsUsual: [
         {name:'Сменить действие', value: 'Сменить действие'},
@@ -560,6 +581,12 @@ export default {
     },
     optionSelectMain(option){
       this.selectedOpt=option.name
+    },
+    optionSelectMainFirst(option){
+      this.selectedOptFirst=option.name
+    },
+    optionSelectMainSecond(option){
+      this.selectedOptSecond=option.name
     },
     optionSelectAction(option){
       if (option.name=='Сменить этап'){
