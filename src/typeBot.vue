@@ -197,7 +197,7 @@
                       :options="optionsIf"
                       @select-opt="optionSelectMain"
                   />:
-                  <input type="text" style="border-bottom: 1px dashed black; outline: none"/>
+                  <input v-model="condition" type="text" style="border-bottom: 1px dashed black; outline: none"/>
                 </div>
               </div>
               <div class="circle-pause">
@@ -241,7 +241,7 @@
         </div>
         <div class="message-body__main">
           <div class="message-body__main_top">
-            <textarea class="message-textarea" cols="30" placeholder="Введите сообщение бота..."></textarea>
+            <textarea v-model="textMessage" class="message-textarea" cols="30" placeholder="Введите сообщение бота..."></textarea>
             <div class="circle">
 
             </div>
@@ -249,7 +249,7 @@
           <div></div>
           <div v-if="buttonsArray" :key="'btn'+button.idButton" :data-key="button.idButton" class="btn_grp" v-for="(button, key) in buttonsArray">
             <div>
-              <input type="text" class="input_button">
+              <input v-model="button.input" type="text" class="input_button">
             </div>
             <div class="delete-button-message" @click="removeButton(button.idButton)">
               <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" viewBox="0 0 20 24" fill="#FFF">
@@ -395,6 +395,8 @@ export default {
   data () {
     return {
       valueField:'',
+      condition:'',
+      textMessage:'',
       optionsProgress:[
         {id:1, name:'Фиксация клиента', color:'rgb(115, 0, 255)', text:'white',value:'Фиксация клиента'},
         {id:2, name:'Прямое обращение', color:'rgb(0, 206, 206)', text:'white',value:'Фиксация клиента'},
@@ -497,7 +499,7 @@ export default {
     },
     addButton () {
       /*if (!this.data.buttons) this.data.buttons = []*/
-      this.buttonsArray.push({idButton:(this.countButton)})
+      this.buttonsArray.push({idButton:(this.countButton), input:''})
       this.countButton+=1
       var key = this.countButton - 1
       this.$forceUpdate()
@@ -546,6 +548,23 @@ export default {
           minutes:Number(this.timePause.minutModel),
           seconds:Number(this.timePause.secModel)
         }
+      }
+      if (action=='if'){
+        this.$parent.bots[this.id-1].if={
+          nameField:this.selectedOptField,
+          operator:this.selectedOpt,
+          condition:this.condition
+        }
+        console.log(this.$parent.bots)
+      }
+      if (action=='message'){
+        this.$parent.bots[this.id-1].message={
+          person:this.selectedOpt,
+          textMessage:this.textMessage,
+          countButton:this.countButton,
+          arrayButtons:this.buttonsArray
+        }
+        console.log(this.$parent.bots)
       }
       this.type = action
       this.$parent.bots[this.id-1].type=action
@@ -708,11 +727,21 @@ export default {
     },
     selectedOptField:{
       handler(newValue){
-        this.$parent.bots[this.id-1].additionalFields={
-          nameField:this.selectedOptField,
-          value:this.valueField
+        if (this.type=='if'){
+          this.$parent.bots[this.id-1].if={
+            nameField:this.selectedOptField,
+            operator:this.selectedOpt,
+            condition:this.condition
+          }
+          console.log(this.$parent.bots)
         }
-        console.log(this.$parent.bots)
+        else {
+          this.$parent.bots[this.id-1].additionalFields={
+            nameField:this.selectedOptField,
+            value:this.valueField
+          }
+          console.log(this.$parent.bots)
+        }
       },
       deep:true
     },
@@ -722,9 +751,67 @@ export default {
         value:this.valueField
       }
       console.log(this.$parent.bots)
-    }
-  }
+    },
 
+
+  selectedOpt(newValue){
+      if (this.type=='if') {
+        this.$parent.bots[this.id - 1].if = {
+          nameField: this.selectedOptField,
+          operator: this.selectedOpt,
+          condition: this.condition
+        }
+        console.log(this.$parent.bots)
+      }
+    if (this.type=='message'){
+      this.$parent.bots[this.id-1].message={
+        person:this.selectedOpt,
+        textMessage:this.textMessage,
+        countButton:this.countButton,
+        arrayButtons:this.buttonsArray
+      }
+      console.log(this.$parent.bots)
+    }
+  },
+  condition(newValue){
+    this.$parent.bots[this.id - 1].if = {
+      nameField: this.selectedOptField,
+      operator: this.selectedOpt,
+      condition: this.condition
+    }
+    console.log(this.$parent.bots)
+  },
+    textMessage(newValue){
+      this.$parent.bots[this.id-1].message={
+        person:this.selectedOpt,
+        textMessage:this.textMessage,
+        countButton:this.countButton,
+        arrayButtons:this.buttonsArray
+      }
+      console.log(this.$parent.bots)
+    },
+    countButton(newValue){
+      this.$parent.bots[this.id-1].message={
+        person:this.selectedOpt,
+        textMessage:this.textMessage,
+        countButton:this.countButton,
+        arrayButtons:this.buttonsArray
+      }
+      console.log(this.$parent.bots)
+    },
+    buttonsArray:{
+      handler(newValue){
+        this.$parent.bots[this.id-1].message={
+          person:this.selectedOpt,
+          textMessage:this.textMessage,
+          countButton:this.countButton,
+          arrayButtons:this.buttonsArray
+        }
+        console.log(this.$parent.bots)
+      },
+      deep:true
+    },
+  },
 }
 </script>
 
