@@ -187,8 +187,8 @@
                   <div>Если</div>
                   <main-drop-down
                       style="border-bottom: 1px dashed black"
-                      :selected="selectedOptFirst"
-                      :options="optionsIfFirst"
+                      :selected="selectedOptField"
+                      :options="optionsIfField"
                       @select-opt="optionSelectMainFirst"
                   />
                   <main-drop-down
@@ -278,7 +278,10 @@
 
           <div>
             <div class="wrapper-select-pause">
-              <div class="wrapper-select-pause__field">Таймер: <input v-model="hoursModel" type="text" maxlength="4" onkeydown="this.style.width = ((this.value.length + 1) * 9) + 'px';" class="pause-timer"/> час <input v-model="minutModel" type="text" maxlength="4" onkeydown="this.style.width = ((this.value.length + 1) * 9) + 'px';" class="pause-timer"/> мин <input v-model="secModel" type="text" maxlength="4" onkeydown="this.style.width = ((this.value.length + 1) * 9) + 'px';" class="pause-timer"/> сек</div>
+              <div class="wrapper-select-pause__field">Таймер:
+                <input @keypress="typ($event)" v-model="timePause.hoursModel" type="text" maxlength="4" onkeydown="this.style.width = ((this.value.length + 1) * 9) + 'px';" class="pause-timer"/> час
+                <input @keypress="typ($event)" v-model="timePause.minutModel" type="text" maxlength="4" onkeydown="this.style.width = ((this.value.length + 1) * 9) + 'px';" class="pause-timer"/> мин
+                <input @keypress="typ($event)" v-model="timePause.secModel" type="text" maxlength="4" onkeydown="this.style.width = ((this.value.length + 1) * 9) + 'px';" class="pause-timer"/> сек</div>
               <div class="circle-pause">
 
               </div>
@@ -325,11 +328,11 @@
             <div class="wrapper-select-additionalField">
               <main-drop-down
                   style="border-bottom: 1px dashed black"
-                  :selected="selectedOptFirst"
-                  :options="optionsIfFirst"
+                  :selected="selectedOptField"
+                  :options="optionsIfField"
                   @select-opt="optionSelectMainFirst"
               />
-              <input type="text" style="border-bottom: 1px dashed black; outline: none"/>
+              <input v-model="valueField" type="text" style="border-bottom: 1px dashed black; outline: none"/>
               <div class="circle-pause">
 
               </div>
@@ -391,22 +394,26 @@ export default {
   props: ['id'],
   data () {
     return {
+      valueField:'',
       optionsProgress:[
         {id:1, name:'Фиксация клиента', color:'rgb(115, 0, 255)', text:'white',value:'Фиксация клиента'},
         {id:2, name:'Прямое обращение', color:'rgb(0, 206, 206)', text:'white',value:'Фиксация клиента'},
         {id:3, name:'Возврат от отдела продаж', color:'rgb(255, 128, 64)', text:'black',value:'Фиксация клиента'},
         {id:4, name:'Принято в работу', color:'rgb(196, 255, 196)', text:'black',value:'Фиксация клиента'}
       ],
-      selectedProgress:'Не выбрано',
-      hoursModel:0,
-      minutModel:1,
-      secModel:0,
+      selectedProgress:1,
+      timePause:{
+        hoursModel:0,
+        minutModel:1,
+        secModel:0,
+      },
+
       optionsAction:[
         {name:'Сменить этап', value: 'Сменить этап'},
         {name:'Изменить знач. доп поля', value: 'Изменить знач. доп поля'},
       ],
       selectedOpt:'Не выбрано',
-      selectedOptFirst:'Поле',
+      selectedOptField:'Поле',
       messageToWhom: [
         {name:'Клиент', value: 'Клиент'},
         {name:'Менеджер', value: 'Менеджер'},
@@ -417,7 +424,7 @@ export default {
         {name:'Не равно', value: 'Не равно'},
         {name:'Содержит', value: 'Содержит'},
       ],
-      optionsIfFirst: [
+      optionsIfField: [
         {name:'Фамилия', value: 'Фамилия'},
         {name:'Имя', value: 'Имя'},
         {name:'Отчество', value: 'Отчество'},
@@ -462,6 +469,9 @@ export default {
     }
   },
   methods: {
+    typ: function(event){
+      if (event.which < 48 || event.which > 57) { event.preventDefault();}
+    },
     optionSelectProgress(option) {
       this.selectedProgress = option.id;
     },
@@ -530,6 +540,13 @@ export default {
     },
     addNew (action) {
       console.log(this.id + this.type)
+      if (action=='pause'){
+        this.$parent.bots[this.id-1].timePause={
+          hours:Number(this.timePause.hoursModel),
+          minutes:Number(this.timePause.minutModel),
+          seconds:Number(this.timePause.secModel)
+        }
+      }
       this.type = action
       this.$parent.bots[this.id-1].type=action
       console.log(this.id + this.type)
@@ -592,12 +609,13 @@ export default {
       this.selectedOpt=option.name
     },
     optionSelectMainFirst(option){
-      this.selectedOptFirst=option.name
+      this.selectedOptField=option.name
     },
     optionSelectAction(option){
       if (option.name=='Сменить этап'){
         let action='stages'
         this.type = action
+        this.$parent.bots[this.id-1].selectedProgress=this.selectedProgress
         this.$parent.bots[this.id-1].type=action
         console.log(this.id + this.type)
         if (action !== 'end') {
@@ -625,6 +643,7 @@ export default {
       if (option.name=='Изменить знач. доп поля'){
         let action='additionalField'
         this.type = action
+        this.$parent.bots[this.id-1].additionalFields={nameField:this.selectedOptField, value:this.valueField}
         this.$parent.bots[this.id-1].type=action
         console.log(this.id + this.type)
         if (action !== 'end') {
@@ -670,6 +689,41 @@ export default {
 
     }
   },
+  watch:{
+    selectedProgress(newValue){
+      this.selectedProgress=newValue
+      this.$parent.bots[this.id-1].selectedProgress=newValue
+      console.log(this.$parent.bots)
+    },
+    timePause:{
+      handler(newValue){
+          this.$parent.bots[this.id-1].timePause={
+            hours:Number(this.timePause.hoursModel),
+            minutes:Number(this.timePause.minutModel),
+            seconds:Number(this.timePause.secModel)
+          }
+        console.log(this.$parent.bots)
+      },
+      deep:true
+    },
+    selectedOptField:{
+      handler(newValue){
+        this.$parent.bots[this.id-1].additionalFields={
+          nameField:this.selectedOptField,
+          value:this.valueField
+        }
+        console.log(this.$parent.bots)
+      },
+      deep:true
+    },
+    valueField(newValue){
+      this.$parent.bots[this.id-1].additionalFields={
+        nameField:this.selectedOptField,
+        value:this.valueField
+      }
+      console.log(this.$parent.bots)
+    }
+  }
 
 }
 </script>
