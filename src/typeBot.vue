@@ -32,7 +32,8 @@
       </div>
     </slot>
     <slot v-else-if="type === 'next'">
-      <div class="general-options__title" @click="areOptionsVisible=true" v-on-clickaway="closeSelect">
+<!--      v-on-clickaway="closeSelect"-->
+      <div class="general-options__title" @click="areOptionsVisible=true" >
         Следующий шаг
       </div>
       <div class="general-options__list" v-if="id== 2">
@@ -56,12 +57,12 @@
             <path fill-rule="evenodd" clip-rule="evenodd" d="M5 5C4.44772 5 4 5.44772 4 6V11C4 11.5523 4.44772 12 5 12H11L12.3172 13.3172C12.5691 13.5691 13 13.3907 13 13.0343V12C13.5523 12 14 11.5523 14 11V6C14 5.44772 13.5523 5 13 5H5ZM5 7H13V8H5V7ZM10 9H5V10H10V9Z" fill="white"></path>
           </svg>
           Прерыватель</button>
-        <button @click="addNew('action')" type="button">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="9" cy="9" r="9" fill="#39E2A5"></circle>
-            <path d="M5 11.2995V13H6.72268L11.6297 8.10467L9.90701 6.40419L5 11.2995ZM12.8825 6.7649C13.0392 6.61031 13.0392 6.30113 12.8825 6.14654L11.8385 5.11594C11.6819 4.96135 11.3687 4.96135 11.2121 5.11594L10.429 5.88889L12.1517 7.58937L12.8825 6.7649Z" fill="white"></path>
-          </svg>
-          Выполнить действие</button>
+
+
+        <ActionDropDown
+            :options="optionsAction"
+            @select-opt="optionSelectAction"
+        />
         <button @click="addNew('if')" type="button">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="9" cy="9" r="9" fill="#9B51E0"></circle>
@@ -113,12 +114,16 @@
             <path fill-rule="evenodd" clip-rule="evenodd" d="M5 5C4.44772 5 4 5.44772 4 6V11C4 11.5523 4.44772 12 5 12H11L12.3172 13.3172C12.5691 13.5691 13 13.3907 13 13.0343V12C13.5523 12 14 11.5523 14 11V6C14 5.44772 13.5523 5 13 5H5ZM5 7H13V8H5V7ZM10 9H5V10H10V9Z" fill="white"></path>
           </svg>
           Прерыватель</button>
-        <button @click="addNew('action')" type="button">
+        <ActionDropDown
+            :options="optionsAction"
+            @select-opt="optionSelectAction"
+        />
+<!--        <button @click="addNew('action')" type="button">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="9" cy="9" r="9" fill="#39E2A5"></circle>
             <path d="M5 11.2995V13H6.72268L11.6297 8.10467L9.90701 6.40419L5 11.2995ZM12.8825 6.7649C13.0392 6.61031 13.0392 6.30113 12.8825 6.14654L11.8385 5.11594C11.6819 4.96135 11.3687 4.96135 11.2121 5.11594L10.429 5.88889L12.1517 7.58937L12.8825 6.7649Z" fill="white"></path>
           </svg>
-          Выполнить действие</button>
+          Выполнить действие</button>-->
         <button @click="addNew('if')" type="button">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="9" cy="9" r="9" fill="#9B51E0"></circle>
@@ -159,8 +164,45 @@
       </div>
 
     </slot>
+    <slot v-else-if="type === 'if'">
+      <div class="message-header">
+        <div class="message-header-id">
+          {{id}}
+        </div>
+        <div class="message-header-text">
+          Условие
+        </div>
+      </div>
+      <div class="pause-body">
+        <div class="pause-body__main">
+          <div>
+            <div class="wrapper-select-if">
+              <div class="if-description">
+                <div>
+                  <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.42375 16.1661L6.4476 16.1538L6.46829 16.1367L9.17521 13.8979L9.18591 13.889L9.19557 13.879C9.26642 13.8058 9.37416 13.6619 9.37416 13.4813V9.00007L14.0359 2.49106C14.2817 2.16233 14.3149 1.72747 14.1405 1.3669C13.9687 1.01182 13.617 0.75 13.1845 0.75H1.81546C1.42627 0.75 1.03401 0.96964 0.855735 1.37512C0.773959 1.56112 0.736299 1.75074 0.754489 1.9435C0.772662 2.13606 0.845029 2.31544 0.958788 2.48345L0.958716 2.4835L0.96255 2.48885L5.62585 9.00007V15.7201C5.62585 15.8791 5.70005 16.1113 5.92406 16.1976C5.97426 16.2275 6.02293 16.2382 6.04994 16.2429C6.09187 16.2501 6.13043 16.25 6.14452 16.25L6.14654 16.25C6.26445 16.25 6.36903 16.1949 6.41446 16.171C6.4179 16.1692 6.42101 16.1675 6.42375 16.1661ZM6.66723 14.6293V8.83582C6.66723 8.72002 6.61628 8.61633 6.59284 8.56864C6.59112 8.56514 6.58955 8.56194 6.58815 8.55906L6.57885 8.53984L6.56643 8.52246L1.80661 1.86812C1.80259 1.86144 1.79928 1.85473 1.79682 1.84846C1.79618 1.84685 1.79563 1.84534 1.79515 1.84394C1.80774 1.82696 1.81865 1.81586 1.82654 1.80974C1.82655 1.80973 1.82657 1.80971 1.82659 1.8097H13.1845C13.1854 1.8097 13.1861 1.80972 13.1868 1.80974C13.19 1.81345 13.1958 1.8214 13.2031 1.83646L13.2056 1.84163C13.205 1.84363 13.2042 1.84591 13.2032 1.84846C13.2007 1.85472 13.1974 1.86144 13.1934 1.86811L8.44007 8.51339C8.39606 8.56712 8.37293 8.62999 8.36175 8.66465C8.34641 8.71224 8.33277 8.77401 8.33277 8.83582V13.2517L6.66723 14.6293Z" fill="#BCBCBC" stroke="#BCBCBC" stroke-width="0.5"></path>
+                  </svg>
+                </div>
+                <div class="if-description__text">
+                  <div>Если</div>
+                  <main-drop-down
+                      style="border-bottom: 1px dashed black"
+                      :selected="selectedOpt"
+                      :options="optionsIf"
+                      @select-opt="optionSelectMain"
+                  />:
+                </div>
+              </div>
+              <div class="circle-pause">
 
-    <slot v-else-if="type === 'if'"><div><i class="fa fa-solid fa-pause" style="display: inline-block"></i> Чеееел, какое условие?</div></slot>
+              </div>
+            </div>
+
+          </div>
+          <button class="pause-new_button" @click="addButton()">+ Добавить следующее условие</button>
+        </div>
+      </div>
+    </slot>
 
     <slot v-else-if="type === 'message'">
       <div class="message-header">
@@ -168,7 +210,13 @@
           {{id}}
         </div>
         <div class="message-header-text">
-          Отправить сообщение (кому): <span>Автор</span>
+          Отправить сообщение (кому): <span>
+          <main-drop-down
+            :selected="selectedOpt"
+            :options="messageToWhom"
+            @select-opt="optionSelectMain"
+          />
+        </span>
         </div>
       </div>
       <div class="message-body">
@@ -224,7 +272,51 @@
 
           <div>
             <div class="wrapper-select-pause">
+              <div class="wrapper-select-pause__field">Таймер: <input v-model="hoursModel" type="text" maxlength="4" onkeydown="this.style.width = ((this.value.length + 1) * 9) + 'px';" class="pause-timer"/> час <input v-model="minutModel" type="text" maxlength="4" onkeydown="this.style.width = ((this.value.length + 1) * 9) + 'px';" class="pause-timer"/> мин <input v-model="secModel" type="text" maxlength="4" onkeydown="this.style.width = ((this.value.length + 1) * 9) + 'px';" class="pause-timer"/> сек</div>
+              <div class="circle-pause">
 
+              </div>
+            </div>
+
+          </div>
+          <button class="pause-new_button" @click="addButton()">+ Добавить следующее условие</button>
+        </div>
+      </div>
+    </slot>
+    <slot v-else-if="type === 'stages'">
+      <div class="message-header">
+        <div class="message-header-id">
+          {{id}}
+        </div>
+        <div class="message-header-text">
+          Этапы
+        </div>
+      </div>
+      <div class="pause-body">
+        <div class="pause-body__main">
+          <div>
+            <div class="wrapper-select-pause" v-for="option in $parent.bots">
+              {{option.id}}-{{option.type}}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </slot>
+    <slot v-else-if="type === 'additionalField'">
+      <div class="message-header">
+        <div class="message-header-id">
+          {{id}}
+        </div>
+        <div class="message-header-text">
+          Изменить значение доп. поля
+        </div>
+      </div>
+      <div class="pause-body">
+        <div class="pause-body__main">
+
+          <div>
+            <div class="wrapper-select-pause">
               <div class="circle-pause">
 
               </div>
@@ -278,15 +370,35 @@
 <script>
 import Vue from 'vue'
 import UsualFunctionsDropDown from "@/Components/usualFunctionsDropDown";
+import ActionDropDown from "@/Components/ActionDropDown";
+import MainDropDown from "@/Components/mainDropDown";
 export default {
   name: 'typeBot',
-  components: {UsualFunctionsDropDown},
+  components: {MainDropDown, ActionDropDown, UsualFunctionsDropDown},
   props: ['id'],
   data () {
     return {
+      hoursModel:0,
+      minutModel:1,
+      secModel:0,
+      optionsAction:[
+        {name:'Сменить этап', value: 'Сменить этап'},
+        {name:'Изменить знач. доп поля', value: 'Изменить знач. доп поля'},
+      ],
+      selectedOpt:'Не выбрано',
+      messageToWhom: [
+        {name:'Клиент', value: 'Клиент'},
+        {name:'Менеджер', value: 'Менеджер'},
+        {name:'Ввести номер', value: 'Ввести номер'},
+      ],
+      optionsIf: [
+        {name:'Равно', value: 'Равно'},
+        {name:'Не равно', value: 'Не равно'},
+        {name:'Содержит', value: 'Содержит'},
+      ],
       optionsUsual: [
-        {name:'Сменить действие', value: 1},
-        {name:'Удалить', value: 2},
+        {name:'Сменить действие', value: 'Сменить действие'},
+        {name:'Удалить', value: 'Удалить'},
       ],
       countButton:0,
       buttonsArray : [],
@@ -378,9 +490,12 @@ export default {
       if (this.type === 'start')  return 'alert alert-success'
       else if (this.type === 'message') return 'alert message-input'
       else if (this.type === 'next') return 'alert general-options'
+      else if (this.type === 'if') return 'alert alert-if'
       else if (this.type === 'pause') return 'alert alert-pause'
       else if (this.type === 'bot') return 'alert alert-bot'
       else if (this.type === 'end') return 'alert alert-end'
+      else if (this.type === 'stages') return 'alert alert-stages'
+      else if (this.type === 'additionalField') return 'alert alert-additionalField'
       else return 'alert alert-dark'
     },
     addNew (action) {
@@ -421,7 +536,6 @@ export default {
       let currentBoxA='#box' + this.id
       let pattern = `^${currentBoxA}`;
       let re = new RegExp(pattern);
-      console.log()
       this.$parent.connections=this.$parent.connections.filter(p=>!re.exec(p.boxA))
       console.log(this.$parent.bots)
       console.log(this.$parent.connections)
@@ -443,6 +557,65 @@ export default {
       if (option.name=='Удалить'){
         this.removeElement()
       }
+    },
+    optionSelectMain(option){
+      this.selectedOpt=option.name
+    },
+    optionSelectAction(option){
+      if (option.name=='Сменить этап'){
+        let action='stages'
+        this.type = action
+        this.$parent.bots[this.id-1].type=action
+        console.log(this.id + this.type)
+        if (action !== 'end') {
+          var newId = this.$parent.bots[this.$parent.bots.length-1].id + 1
+          this.$parent.bots.push({
+            id: newId,
+            parent: this.id,
+            position: {x: (this.position.x + parseInt(this.position.width) + 150), y: this.position.y, width: '270px'},
+            type: 'next',
+            data: {
+              selectStage: false,
+              connection: this.$parent.connections.length
+            }
+          })
+          this.position.width = 'auto'
+          this.$parent.connections.push({
+            boxA: '#box' + this.id,
+            boxB: '#box' + newId
+          })
+        } else {
+          this.position.width = 'auto'
+        }
+      }
+
+      if (option.name=='Изменить знач. доп поля'){
+        let action='additionalField'
+        this.type = action
+        this.$parent.bots[this.id-1].type=action
+        console.log(this.id + this.type)
+        if (action !== 'end') {
+          var newId = this.$parent.bots[this.$parent.bots.length-1].id + 1
+          this.$parent.bots.push({
+            id: newId,
+            parent: this.id,
+            position: {x: (this.position.x + parseInt(this.position.width) + 150), y: this.position.y, width: '270px'},
+            type: 'next',
+            data: {
+              selectStage: false,
+              connection: this.$parent.connections.length
+            }
+          })
+          this.position.width = 'auto'
+          this.$parent.connections.push({
+            boxA: '#box' + this.id,
+            boxB: '#box' + newId
+          })
+        } else {
+          this.position.width = 'auto'
+        }
+      }
+
     },
   },
   mounted() {
@@ -514,10 +687,12 @@ export default {
   gap: 10px;
   width: 100%;
 }
+
+
 .message-header{
   display: flex;
   align-items: center;
-  padding: 7px 9px;
+  padding: 7px 35px 7px 9px;
   cursor: pointer;
 }
 .message-header-id{
@@ -532,7 +707,7 @@ export default {
   margin-right: 7px;
 }
 .message-header-text{
-
+  display: flex;
   color: #8f9a9d;
 }
 .message-header-text span{
@@ -569,7 +744,28 @@ export default {
 .delete-button-message{
   cursor: pointer;
 }
+.alert-stages{
+  width: 400px!important;
+  background: #ffffff;
+  border: 1px solid #bcbcbc;
+  border-radius: 3px;
+  padding: 7px 9px 0;
+}
+.alert-additionalField{
+  width: 400px!important;
+  background: #ffffff;
+  border: 1px solid #bcbcbc;
+  border-radius: 3px;
+  padding: 7px 9px 0;
+}
 .alert-pause{
+   width: 400px!important;
+   background: #ffffff;
+   border: 1px solid #bcbcbc;
+   border-radius: 3px;
+   padding: 7px 9px 0;
+ }
+.alert-if{
   width: 400px!important;
   background: #ffffff;
   border: 1px solid #bcbcbc;
@@ -585,6 +781,32 @@ export default {
   height: 34px;
   margin-bottom: 19px;
   position: relative;
+  display: flex;
+}
+.wrapper-select-if{
+  border: 1px solid #d5d5d5;
+  background: #f7f7f7;
+  padding-top: 7px;
+  padding-bottom: 5px;
+  width: 100%;
+  height: 34px;
+  margin-bottom: 19px;
+  position: relative;
+  display: flex;
+}
+.if-description{
+  display: flex;
+  gap: 10px;
+  padding-left: 10px;
+}
+.if-description__text{
+  display: flex;
+  gap:8px
+}
+.pause-timer{
+  width: 10px;
+  outline:none;
+  border-bottom: 1px dashed black;
 }
 .circle-pause {
   position: absolute;
