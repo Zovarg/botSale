@@ -417,14 +417,14 @@ export default {
       selectedOpt:'Не выбрано',
       selectedOptField:'Поле',
       messageToWhom: [
-        {name:'Клиент', value: 'Клиент'},
-        {name:'Менеджер', value: 'Менеджер'},
-        {name:'Ввести номер', value: 'Ввести номер'},
+        {name:'Клиент', value: 'Client'},
+        {name:'Менеджер', value: 'Manager'},
+        {name:'Ввести номер', value: 'Telephone'},
       ],
       optionsIf: [
-        {name:'Равно', value: 'Равно'},
-        {name:'Не равно', value: 'Не равно'},
-        {name:'Содержит', value: 'Содержит'},
+        {name:'Равно', value: 'Equals'},
+        {name:'Не равно', value: 'Not equal'},
+        {name:'Содержит', value: 'Contain'},
       ],
       optionsIfField: [
         {name:'Фамилия', value: 'Фамилия'},
@@ -437,7 +437,6 @@ export default {
         {name:'Сменить действие', value: 'Сменить действие'},
         {name:'Удалить', value: 'Удалить'},
       ],
-      countButton:0,
       buttonsArray : [],
       areOptionsVisible:false,
       type: this.$attrs.type,
@@ -499,9 +498,8 @@ export default {
     },
     addButton () {
       /*if (!this.data.buttons) this.data.buttons = []*/
-      this.buttonsArray.push({idButton:(this.countButton), input:''})
-      this.countButton+=1
-      var key = this.countButton - 1
+      this.buttonsArray.push({idButton:(this.buttonsArray.length), input:''})
+      var key = this.buttonsArray.length - 1
       this.$forceUpdate()
       setTimeout(() => {
         var newIds = this.$parent.bots[this.$parent.bots.length-1].id + 1
@@ -561,7 +559,6 @@ export default {
         this.$parent.bots[this.id-1].message={
           person:this.selectedOpt,
           textMessage:this.textMessage,
-          countButton:this.countButton,
           arrayButtons:this.buttonsArray
         }
         console.log(this.$parent.bots)
@@ -767,7 +764,6 @@ export default {
       this.$parent.bots[this.id-1].message={
         person:this.selectedOpt,
         textMessage:this.textMessage,
-        countButton:this.countButton,
         arrayButtons:this.buttonsArray
       }
       console.log(this.$parent.bots)
@@ -785,7 +781,6 @@ export default {
       this.$parent.bots[this.id-1].message={
         person:this.selectedOpt,
         textMessage:this.textMessage,
-        countButton:this.countButton,
         arrayButtons:this.buttonsArray
       }
       console.log(this.$parent.bots)
@@ -794,7 +789,6 @@ export default {
       this.$parent.bots[this.id-1].message={
         person:this.selectedOpt,
         textMessage:this.textMessage,
-        countButton:this.countButton,
         arrayButtons:this.buttonsArray
       }
       console.log(this.$parent.bots)
@@ -804,7 +798,6 @@ export default {
         this.$parent.bots[this.id-1].message={
           person:this.selectedOpt,
           textMessage:this.textMessage,
-          countButton:this.countButton,
           arrayButtons:this.buttonsArray
         }
         console.log(this.$parent.bots)

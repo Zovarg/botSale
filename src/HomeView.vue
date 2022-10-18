@@ -328,7 +328,7 @@ a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, bu
   flex-direction: column;
   flex-grow: 1;
   width: 100%;
-  height: calc(100vh - 125px);
+  height: 100vh;
   position: relative;
 }
 .designer__body {
@@ -339,8 +339,7 @@ a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, bu
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;*/
   position: relative;
-  width: calc(100vw - 240px);
-  height: calc(100vh - 125px);
+  height:100vh;
   overflow: hidden;
 }
 .designer__zoom {
