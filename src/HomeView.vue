@@ -31,8 +31,19 @@ export default {
       paths: null,
       boxs: null,
       padding: 20,
+      testData: [
+          {"id":1,"position":{"x":70,"y":150,"width":"auto"},"type":"start"},
+        {"id":2,"parent":1,"position":{"x":270,"y":199,"width":"auto"},"type":"if","if":{"nameField":"Имя","operator":"Равно","condition":"Вася"}},
+        {"id":3,"parent":2,"position":{"x":683,"y":266,"width":"auto"},"type":"message","data":{"selectStage":false,"connection":1},"message":{"person":"Клиент","textMessage":"Привет {Имя}","countButton":0,"arrayButtons":[]}},
+        {"id":4,"parent":3,"position":{"x":1110,"y":200,"width":"auto"},"type":"pause","data":{"selectStage":false,"connection":2},"timePause":{"hours":0,"minutes":1,"seconds":0}},
+        {"id":5,"parent":4,"position":{"x":316,"y":603,"width":"auto"},"type":"stages","data":{"selectStage":false,"connection":3},"selectedProgress":2},
+        {"id":6,"parent":5,"position":{"x":730,"y":594,"width":"auto"},"type":"message","data":{"selectStage":false,"connection":4},"message":{"person":"Клиент","textMessage":"Отправка прайса, бла бла бла","countButton":0,"arrayButtons":[]}},
+        {"id":7,"parent":6,"position":{"x":1157,"y":603,"width":"auto"},"type":"end","data":{"selectStage":false,"connection":5}}
+      ],
+
       bots: [
-        {
+
+        /*{
           id: 1,
           position: {x: 70, y: 150, width: 'auto'},
           type: 'start'
@@ -42,7 +53,7 @@ export default {
           parent: 1,
           position: {x: 270, y: 200, width: '270px'},
           type: 'next'
-        }
+        }*/
       ],
       connections: [{
         boxA: '#box1',

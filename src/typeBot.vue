@@ -193,7 +193,7 @@
                   />
                   <main-drop-down
                       style="border-bottom: 1px dashed black"
-                      :selected="selectedOpt"
+                      :selected="selectedOpt.name"
                       :options="optionsIf"
                       @select-opt="optionSelectMain"
                   />:
@@ -218,7 +218,7 @@
         <div class="message-header-text">
           Отправить сообщение (кому): <span>
           <main-drop-down
-            :selected="selectedOpt"
+            :selected="selectedOpt.name"
             :options="messageToWhom"
             @select-opt="optionSelectMain"
           />
@@ -414,7 +414,7 @@ export default {
         {name:'Сменить этап', value: 'Сменить этап'},
         {name:'Изменить знач. доп поля', value: 'Изменить знач. доп поля'},
       ],
-      selectedOpt:'Не выбрано',
+      selectedOpt:{name:'Не выбрано',value:''},
       selectedOptField:'Поле',
       messageToWhom: [
         {name:'Клиент', value: 'Client'},
@@ -550,14 +550,14 @@ export default {
       if (action=='if'){
         this.$parent.bots[this.id-1].if={
           nameField:this.selectedOptField,
-          operator:this.selectedOpt,
+          operator:this.selectedOpt.value,
           condition:this.condition
         }
         console.log(this.$parent.bots)
       }
       if (action=='message'){
         this.$parent.bots[this.id-1].message={
-          person:this.selectedOpt,
+          person:this.selectedOpt.value,
           textMessage:this.textMessage,
           arrayButtons:this.buttonsArray
         }
@@ -622,7 +622,8 @@ export default {
       }
     },
     optionSelectMain(option){
-      this.selectedOpt=option.name
+      this.selectedOpt.name=option.name
+      this.selectedOpt.value=option.value
     },
     optionSelectMainFirst(option){
       this.selectedOptField=option.name
@@ -727,7 +728,7 @@ export default {
         if (this.type=='if'){
           this.$parent.bots[this.id-1].if={
             nameField:this.selectedOptField,
-            operator:this.selectedOpt,
+            operator:this.selectedOpt.value,
             condition:this.condition
           }
           console.log(this.$parent.bots)
@@ -750,36 +751,38 @@ export default {
       console.log(this.$parent.bots)
     },
 
-
-  selectedOpt(newValue){
-      if (this.type=='if') {
-        this.$parent.bots[this.id - 1].if = {
-          nameField: this.selectedOptField,
-          operator: this.selectedOpt,
-          condition: this.condition
+    selectedOpt: {
+      handler(newValue) {
+        if (this.type == 'if') {
+          this.$parent.bots[this.id - 1].if = {
+            nameField: this.selectedOptField,
+            operator: this.selectedOpt.value,
+            condition: this.condition
+          }
+          console.log(this.$parent.bots)
         }
-        console.log(this.$parent.bots)
-      }
-    if (this.type=='message'){
-      this.$parent.bots[this.id-1].message={
-        person:this.selectedOpt,
-        textMessage:this.textMessage,
-        arrayButtons:this.buttonsArray
-      }
-      console.log(this.$parent.bots)
-    }
-  },
+        if (this.type == 'message') {
+          this.$parent.bots[this.id - 1].message = {
+            person: this.selectedOpt.value,
+            textMessage: this.textMessage,
+            arrayButtons: this.buttonsArray
+          }
+          console.log(this.$parent.bots)
+        }
+      },
+      deep:true
+    },
   condition(newValue){
     this.$parent.bots[this.id - 1].if = {
       nameField: this.selectedOptField,
-      operator: this.selectedOpt,
+      operator: this.selectedOpt.value,
       condition: this.condition
     }
     console.log(this.$parent.bots)
   },
     textMessage(newValue){
       this.$parent.bots[this.id-1].message={
-        person:this.selectedOpt,
+        person:this.selectedOpt.value,
         textMessage:this.textMessage,
         arrayButtons:this.buttonsArray
       }
@@ -787,7 +790,7 @@ export default {
     },
     countButton(newValue){
       this.$parent.bots[this.id-1].message={
-        person:this.selectedOpt,
+        person:this.selectedOpt.value,
         textMessage:this.textMessage,
         arrayButtons:this.buttonsArray
       }
@@ -796,7 +799,7 @@ export default {
     buttonsArray:{
       handler(newValue){
         this.$parent.bots[this.id-1].message={
-          person:this.selectedOpt,
+          person:this.selectedOpt.value,
           textMessage:this.textMessage,
           arrayButtons:this.buttonsArray
         }

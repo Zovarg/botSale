@@ -59,7 +59,7 @@ export default {
 
   computed: {
     getSelected() {
-      let obj = this.options.find(o => o.value === this.selected)
+      let obj = this.options.find(o => o.name === this.selected)
       if (obj) return obj.name
       else return this.selected
     },
