@@ -705,6 +705,32 @@ export default {
       this.style.height = (this.scrollHeight) + 'px';
 
     }
+    if (this.type=='if'){
+      let option=this.optionsIf.filter(p=>p.value==this.$parent.bots[this.id-1].if.operator)
+      this.selectedOpt=option[0]
+      this.selectedOptField=this.$parent.bots[this.id-1].if.nameField
+      this.condition=this.$parent.bots[this.id-1].if.condition
+    }
+    if (this.type=='message'){
+      let option=this.messageToWhom.filter(p=>p.value==this.$parent.bots[this.id-1].message.person)
+      this.selectedOpt=option[0]
+      this.textMessage=this.$parent.bots[this.id-1].message.textMessage
+      this.buttonsArray=this.$parent.bots[this.id-1].message.arrayButtons
+    }
+    if (this.type=='pause'){
+      this.timePause.hoursModel=this.$parent.bots[this.id-1].timePause.hours
+      this.timePause.minutModel=this.$parent.bots[this.id-1].timePause.minutes
+      this.timePause.secModel=this.$parent.bots[this.id-1].timePause.seconds
+    }
+    if (this.type=='stages'){
+      this.selectedProgress=this.$parent.bots[this.id-1].selectedProgress
+    }
+
+    if (this.type=='additionalField'){
+      this.selectedOptField=this.$parent.bots[this.id-1].additionalFields.nameField
+      this.valueField=this.$parent.bots[this.id-1].additionalFields.value
+    }
+
   },
   watch:{
     selectedProgress(newValue){

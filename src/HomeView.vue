@@ -42,6 +42,13 @@ export default {
       ],
 
       bots: [
+        {"id":1,"position":{"x":70,"y":150,"width":"auto"},"type":"start"},
+        {"id":2,"parent":1,"position":{"x":270,"y":199,"width":"auto"},"type":"if","if":{"nameField":"Имя","operator":"Equals","condition":"Вася"}},
+        {"id":3,"parent":2,"position":{"x":683,"y":266,"width":"auto"},"type":"message","data":{"selectStage":false,"connection":1},"message":{"person":"Client","textMessage":"Привет {Имя}","arrayButtons":[]}},
+        {"id":4,"parent":3,"position":{"x":1110,"y":200,"width":"auto"},"type":"pause","data":{"selectStage":false,"connection":2},"timePause":{"hours":1,"minutes":1,"seconds":0}},
+        {"id":5,"parent":4,"position":{"x":316,"y":603,"width":"auto"},"type":"stages","data":{"selectStage":false,"connection":3},"selectedProgress":2},
+        {"id":6,"parent":5,"position":{"x":730,"y":594,"width":"auto"},"type":"message","data":{"selectStage":false,"connection":4},"message":{"person":"Client","textMessage":"Отправка прайса, бла бла бла","arrayButtons":[]}},
+        {"id":7,"parent":6,"position":{"x":1157,"y":603,"width":"auto"},"type":"end","data":{"selectStage":false,"connection":5}}
 
         /*{
           id: 1,
@@ -58,7 +65,28 @@ export default {
       connections: [{
         boxA: '#box1',
         boxB: '#box2'
-      }]
+      },
+        {
+          boxA: '#box2',
+          boxB: '#box3'
+        },
+        {
+          boxA: '#box3',
+          boxB: '#box4'
+        },
+        {
+          boxA: '#box4',
+          boxB: '#box5'
+        },
+        {
+          boxA: '#box5',
+          boxB: '#box6'
+        },
+        {
+          boxA: '#box6',
+          boxB: '#box7'
+        },
+      ]
     }
   },
 
