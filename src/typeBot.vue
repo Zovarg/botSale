@@ -592,16 +592,19 @@ export default {
       console.log(this.type)
       console.log(this.$parent.bots)
       console.log(this.$parent.connections)
-      let currentId = '' + this.id
-      let patternId = `^${currentId}`;
-      let reId = new RegExp(patternId);
-      this.$parent.bots=this.$parent.bots.filter(p=>!reId.exec(p.parent) || p.type!=='next')
-      let currentBoxA='#box' + this.id
-      let pattern = `^${currentBoxA}`;
-      let re = new RegExp(pattern);
-      this.$parent.connections=this.$parent.connections.filter(p=>!re.exec(p.boxA))
-      console.log(this.$parent.bots)
-      console.log(this.$parent.connections)
+      this.$forceUpdate()
+      setTimeout(() => {
+        let currentId = '' + this.id
+        let patternId = `^${currentId}`;
+        let reId = new RegExp(patternId);
+        this.$parent.bots = this.$parent.bots.filter(p => !reId.exec(p.parent) || p.type !== 'next')
+        let currentBoxA = '#box' + this.id
+        let pattern = `^${currentBoxA}`;
+        let re = new RegExp(pattern);
+        this.$parent.connections = this.$parent.connections.filter(p => !re.exec(p.boxA))
+        console.log(this.$parent.bots)
+        console.log(this.$parent.connections)
+      },400)
       /*let count=this.id+1;
       this.$parent.bots[this.id-1].id=this.id;*/
 
